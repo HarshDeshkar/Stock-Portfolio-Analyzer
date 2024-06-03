@@ -27,48 +27,16 @@ import org.springframework.cglib.core.Local;
 import org.springframework.web.client.RestTemplate;
 
 public class PortfolioManagerImpl implements PortfolioManager {
-
-
-
-
   private RestTemplate restTemplate;
 
-
-  // Caution: Do not delete or modify the constructor, or else your build will break!
-  // This is absolutely necessary for backward compatibility
+  
   protected PortfolioManagerImpl(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
   }
 
-
-  //TODO: CRIO_TASK_MODULE_REFACTOR
-  // 1. Now we want to convert our code into a module, so we will not call it from main anymore.
-  //    Copy your code from Module#3 PortfolioManagerApplication#calculateAnnualizedReturn
-  //    into #calculateAnnualizedReturn function here and ensure it follows the method signature.
-  // 2. Logic to read Json file and convert them into Objects will not be required further as our
-  //    clients will take care of it, going forward.
-
-  // Note:
-  // Make sure to exercise the tests inside PortfolioManagerTest using command below:
-  // ./gradlew test --tests PortfolioManagerTest
-
-  //CHECKSTYLE:OFF
-
-
-
-
-
-
   private Comparator<AnnualizedReturn> getComparator() {
     return Comparator.comparing(AnnualizedReturn::getAnnualizedReturn).reversed();
   }
-
-  //CHECKSTYLE:OFF
-
-  // TODO: CRIO_TASK_MODULE_REFACTOR
-  //  Extract the logic to call Tiingo third-party APIs to a separate function.
-  //  Remember to fill out the buildUri function and use that.
-
 
   public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to)
       throws JsonProcessingException {
@@ -124,36 +92,4 @@ public class PortfolioManagerImpl implements PortfolioManager {
     double annualized_returns = Math.pow((1.0 + totalReturns), (1.0 / total_num_years)) - 1;
     return new AnnualizedReturn(trade.getSymbol(), annualized_returns, totalReturns);
     }
-  // public AnnualizedReturn getAnnualizedReturn(PortfolioTrade portfolioTrade, LocalDate endDate) {
-  //   AnnualizedReturn annualizedReturn;
-  //   String symbol = portfolioTrade.getSymbol();
-  //   LocalDate startLocalDate = portfolioTrade.getPurchaseDate();
-
-  //   try {
-  //     List<Candle> stocksStartToEndDate;
-
-  //     stocksStartToEndDate = getStockQuote(symbol, startLocalDate, endDate);
-  //     Candle stockStartDate = stocksStartToEndDate.get(0);
-  //     Candle stockLatest = stocksStartToEndDate.get(stocksStartToEndDate.size() - 1);
-
-  //     double buyPrice = stockStartDate.getOpen();
-  //     double sellPrice = stockLatest.getClose();
-
-  //     double totalReturn = (sellPrice - buyPrice) / buyPrice;
-
-  //     double numYears = (double) ChronoUnit.DAYS.between(startLocalDate, endDate);
-
-  //     double annualizedReturns = Math.pow((1 + totalReturn),(1 / numYears)) - 1;
-
-  //     annualizedReturn = new AnnualizedReturn(symbol, annualizedReturns, totalReturn);
-      
-  //   } catch (JsonProcessingException e){
-  //     annualizedReturn = new AnnualizedReturn(symbol, Double.NaN, Double.NaN);
-
-  //   }
-  //   return annualizedReturn;
-  // }
-
-
-
 }
